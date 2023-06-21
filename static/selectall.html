@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>全选和反选</title>
+	</head>
+	<script type="text/javascript">
+		//页面加载
+		window.onload = function(){
+			var checkAll = document.getElementById("checkAll");
+			var checkBack = document.getElementById("checkBack");
+			
+			var hobby = document.getElementsByClassName("check");
+			
+			//全选
+			checkAll.onclick = function(){
+				var ok = this.checked; //checked为布尔值
+				for(var i in hobby){
+					hobby[i].checked = ok;
+				}
+			};
+			//反选
+			checkBack.onclick = function(){					
+				for(var i in hobby){
+					hobby[i].checked = !hobby[i].checked;
+				}
+			};		
+		};
+	</script>
+	<body>
+		<caption>兴趣爱好</caption>
+		<div id="dv">
+			<input class="check" type="checkbox" value="玩游戏"/>玩游戏
+			<input class="check" type="checkbox" value="听音乐"/>听音乐
+			<input class="check" type="checkbox" value="做运动"/>做运动
+			<input class="check" type="checkbox" value="搞学习"/>搞学习
+			<input class="check" type="checkbox" value="吃东西"/>吃东西
+		</div>	
+		<div>
+			<input id="checkAll" type="checkbox"/>全选
+			<input id="checkBack" type="checkbox"/>反选
+		</div>
+	</body>
+</html>

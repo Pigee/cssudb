@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=devie-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>批量更新SQL</title>
+</head>
+<script type="text/javascript">
+                //页面加载
+                window.onload = function(){
+                        var checkAll = document.getElementById("checkAll");
+                        var checkBack = document.getElementById("checkBack");
+
+                        var hobby = document.getElementsByClassName("Fruit");
+
+                        //全选
+                        checkAll.onclick = function(){
+                                var ok = this.checked; //checked为布尔值
+                                for(var i in hobby){
+                                        hobby[i].checked = ok;
+                                }
+                        };
+                        //反选
+                        checkBack.onclick = function(){
+                                for(var i in hobby){
+                                        hobby[i].checked = !hobby[i].checked;
+                                }
+                        };
+                };
+ </script>
+<body>
+ <form action="runsql" method="post"> 
+您想执行的SQL是: <br />
+<textarea name="qstr" rows="8" cols="150" ></textarea> 
+<br /><br />
+您想执行的数据库是:<br /><br /> 
+<input id="checkAll" type="checkbox"/>全选
+<input id="checkBack" type="checkbox"/>反选 
+<input id="exesql" type="submit" value="执行SQL"/><br />
+<p>
+ {{range .}}
+<label><input class="Fruit" type="checkbox" name={{.}} value={{.}} /> 
+{{.}}
+</label> <br />
+{{end}}<p>
+</form>
+</body>
+<html>
