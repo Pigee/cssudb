@@ -63,23 +63,27 @@ func runsqlHandler(w http.ResponseWriter, r *http.Request) {
 	// infoLog.Println("r.Formstr : ", r.Form["qstr"][0])
 	sqlstr := r.Form["qstr"][0]
 	sqlid, err := insertSql(myconf, sqlstr)
+
 	if err != nil {
 		infoLog.Println("insert t_sql failed, err:",sqlid, err)
 		return
 	}
-/*
+
+       infoLog.Println(sqlid,";",sqlstr)
 	for name, value := range r.Form {
-		 infoLog.Println(name,":", value[0])
-		if strings.HasPrefix(name, "cs_s_run") {
+	//	 infoLog.Println(name,":", value[0])
+		if strings.HasPrefix(name, "cs_s_run_") {
+		    // infoLog.Println(name,":", value[0])
 			err := runSql(myconf, sqlstr, name)
+		     infoLog.Println(name,":", value[0],sqlid,",",sqlstr)
 			if err != nil {
 				insertSqllog(myconf, name, sqlid, 0)
 			} else {
 				insertSqllog(myconf, name, sqlid, 1)
 			}
-		} 
+		}
 	}
- */
+
 	w.Write([]byte(r.Method + "\n"))
 
 	return
