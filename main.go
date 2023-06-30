@@ -84,7 +84,14 @@ func runsqlHandler(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	w.Write([]byte(r.Method + "\n"))
+	// w.Write([]byte(r.Method + "\n"))
+ 	tmpl, err := template.ParseFiles("./static/result.tmpl")
+	if err != nil {
+		infoLog.Println("create template failed, err:", err)
+		return
+	}
+	// 利用给定数据渲染模板, 并将结果写入w
+	tmpl.Execute(w,sqlstr )
 
 	return
 
@@ -152,6 +159,38 @@ func GetDb(c Cssdbconf) (dba []string, e error) {
 	infoLog.Println("--", dbarr)
 	return dbarr, err
 }
+// 获得所有的创世数据库名
+func Getsqllog(c Cssdbconf) (dba []string, e error) {
+	var dbname string
+	dbarr := []string{"cs_s_run"}
+	DB, _ := sql.Open("mysql", c.Dbstr)
+	defer DB.Close()
+
+	DB.SetConnMaxLifetime(100)
+	DB.SetMaxIdleConns(10)
+	if err := DB.Ping(); err != nil {
+		infoLog.Println("open database failed...")
+	}
+
+	infoLog.Println("connnect cs_s_run database success...")
+
+	sqlStr := "show databases"
+	rows, err := DB.Query(sqlStr)
+	if err != nil {
+		errorLog.Println("show databases failed...")
+	}
+	//循环显示所有的数据
+	for rows.Next() {
+		rows.Scan(&dbname)
+		if strings.HasPrefix(dbname, "cs_s_run_") {
+			dbarr = append(dbarr, dbname)
+		}
+	}
+
+	infoLog.Println("--", dbarr)
+	return dbarr, err
+}
+
 
 // 写入cs_s_update数据库的t_sql表,返回最新的ID
 func insertSql(c Cssdbconf, s string) (sid int64, err error) {
