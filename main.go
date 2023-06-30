@@ -159,7 +159,7 @@ func GetDb(c Cssdbconf) (dba []string, e error) {
 	infoLog.Println("--", dbarr)
 	return dbarr, err
 }
-// 获得所有的创世数据库名
+// select t1.id,t1.dbname,t2.esql,t1.isDone,t1.create_date from t_sqllog t1 join t_sql t2 on t1.sqlid = t2.id
 func Getsqllog(c Cssdbconf) (dba []string, e error) {
 	var dbname string
 	dbarr := []string{"cs_s_run"}
